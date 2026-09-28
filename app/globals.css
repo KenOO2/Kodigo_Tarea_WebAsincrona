@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Paleta "arcade de plataformas": cielo, tubería, moneda, ladrillo. */
+  --color-sky: #7ec8f2;
+  --color-sky-deep: #4a9de0;
+  --color-ink: #1b1d22;
+  --color-ink-soft: #4a4d55;
+  --color-pipe: #12823d;
+  --color-pipe-dark: #0d5e2c;
+  --color-coin: #f4b400;
+  --color-coin-dark: #c98a00;
+  --color-brick: #b5551c;
+  --color-danger: #d64545;
+  --color-paper: #f6f1e3;
+  --color-line: #2a2d34;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-pixel), monospace;
+  --font-body: var(--font-inter), sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(var(--color-paper) 0%, var(--color-paper) 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(27, 29, 34, 0.04) 0px,
+      rgba(27, 29, 34, 0.04) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+/* Botón/tarjeta "cartucho": borde grueso + sombra desplazada, como un
+   sprite de botón de juego de plataformas de los 90. Se presiona al
+   hacer click (se corre la sombra). Genérico de pixel-art, no copia
+   ningún asset de un juego específico.
+   Van en @layer components para que utilidades de Tailwind como
+   bg-danger SIEMPRE puedan sobreescribir el "background: white" de
+   aquí, sin importar el orden en que aparezcan en este archivo. */
+@layer components {
+  .pixel-panel {
+    border: 3px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    background: white;
+  }
+
+  .pixel-btn {
+    border: 3px solid var(--color-ink);
+    box-shadow: 4px 4px 0 var(--color-ink);
+    transition: transform 0.05s ease, box-shadow 0.05s ease;
+  }
+
+  .pixel-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--color-ink);
+  }
+
+  .pixel-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
